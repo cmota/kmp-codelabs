@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-10-07T13:22:21Z",
+  "id": "a-multiplatform-adventure",
+  "duration": 90,
+  "title": "A Multiplatform Adventure",
+  "authors": "Carlos Mota",
+  "summary": "In this codelab, you'll build an Android and an iOS application with KMM. The entire business logic of both apps will be written on a shared module that the two platforms will use. You'll work with: ktor, kotlix.serialization, kotlinx.coroutines, kotlinx-datetime, sqldelight, multiplatform-settings and firestore.",
+  "source": "10k0bxV-vo2vGT82kO2jrDSsCJaaIPj89XnNhnz2Unic",
+  "theme": "mobile",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "kotlin"
+  ],
+  "tags": [
+    "dcemea"
+  ],
+  "feedback": "https://github.com/cmota/a-multiplatform-adventure/issues",
+  "url": "a-multiplatform-adventure"
+}

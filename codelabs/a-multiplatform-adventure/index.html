@@ -1,0 +1,1349 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>A Multiplatform Adventure</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="a-multiplatform-adventure"
+                  title="A Multiplatform Adventure"
+                  environment="web"
+                  feedback-link="https://github.com/cmota/a-multiplatform-adventure/issues">
+    
+      <google-codelab-step label="Introduction" duration="90">
+        <p class="image-container"><img style="width: 501.50px" src="img/657b1858759b67ee.png"></p>
+<p>Image downloaded from <a href="https://kotlinlang.org/lp/mobile/" target="_blank">https://kotlinlang.org/lp/mobile/</a>.</p>
+<p><strong>Last Updated:</strong> 2020-10-05</p>
+<h2 is-upgraded>Kotlin Multiplatform</h2>
+<p>Before we start, it&#39;s important to mention that Kotlin Multiplatform is in <strong>alpha</strong>! During development you&#39;ll encounter several issues that will require your extra effort to solve and if you&#39;re relying on libraries you might need to wait for their updates before thinking to upgrade your kotlin version.</p>
+<h2 class="checklist" is-upgraded><strong>What you&#39;ll learn</strong></h2>
+<p>In this codelab, one of my main concerns when designing it was to use the latest kotlin version available, at this moment is version 1.4.10, and then get all the libraries working with it. With this, a couple of ones that I&#39;ve used in the past were left behind, an example of this is <a href="https://github.com/touchlab-lab/FirestoreKMP" target="_blank">FirestoreKMP</a>, that is no longer supported. Nevertheless, there&#39;s a couple others that are being developed by the community and in a few months will be ready for Kotlin 1.4. For the time being and this codelab, I&#39;ve adapted the exercises to show you how to migrate existing code written on both platforms to one that&#39;s going to be shared and with it we create a FirestoreKMM version 0.0.0.0.1. </p>
+<h2 is-upgraded><strong>Important keywords</strong></h2>
+<p>When we dive into Kotlin Multiplatform we start to see a couple of initials when referring for multiplatform development lets start by identifying them out:</p>
+<ul>
+<li>KMP, Kotlin Multiplatform </li>
+</ul>
+<p>It means you can use Kotlin to develop for all platforms out there: android, iOS, JS, server, etc.</p>
+<ul>
+<li>KMM, Kotlin Multiplatform Mobile</li>
+</ul>
+<p>It&#39;s the focus on using KMP on mobile development: android and iOS only.</p>
+<h2 is-upgraded><strong>Why is it different?</strong></h2>
+<p>I hear and read this question quite often, why is Kotlin Multiplatform different from the other cross-platform solutions? Why should I focus on moving my project to KMP instead of Flutter for instance?</p>
+<p>First, let me start by saying that KMP is not a cross-platform solution, not the way that we&#39;ve been used to at least. The goal is not to share your entire application code between Android and iOS, for instance, but instead, share your business logic and leave the UI to be developed natively.</p>
+<p>There&#39;s a really good quote by Kevin Galligan that sums this up:</p>
+<aside class="warning"><p>&#34;Shared UI is a history of pain and failure.</p>
+<p> Shared logic is the history of computers.&#34;</p>
+<p>– Kevin Galligan</p>
+</aside>
+<p>We&#39;ve all experienced this one way or another, either having to deal with cross-platform frameworks or by using apps developed with them.</p>
+<p>A couple of years ago, iOS redesigned their entire UI. If your app was developed using natively when you&#39;d make that upgrade all the components would automatically have the new look and feel. On  the  other hand, if you were using one of these frameworks you needed to wait until they updated their widgets to the new design and then compile and publish your app update. </p>
+<p>In some cases this took months and on others I&#39;ve uninstalled the app and looked for alternatives.</p>
+<p>With this, it&#39;s also important to mention that when you select one of these platforms for your app you need to take into account how long the project will take. If you&#39;re going to develop your app during 1-2 years is one thing, if it&#39;s a long running project it&#39;s another. </p>
+<p>Remember that you&#39;re committing to a specific framework that needs to:</p>
+<ul>
+<li>Have a strong community and documentation behind.</li>
+<li>Provide fast resolution to issues and updates on the APIs/ components.</li>
+<li>Developed by a trustworthy and long running company.</li>
+</ul>
+<p><br>All points are particularly important, especially when we&#39;re talking about long running projects, since you want in five to ten years to still be using that framework and not refactoring your intiring code to a new one just because the company stopped giving its tool support.</p>
+<p>With this in Kotlin Multiplatform you can decide what you want to share, you can start by sharing your unit tests, then perhaps the database, your network module, etc. you decide what you want to share.</p>
+<p>During the last Kotlin Conf (2019), Andrey Breslav on the opening keynote shared this slide:</p>
+<p class="image-container"><img style="width: 624.00px" src="img/a908bf7f21a4d946.png"></p>
+<p>A set of applications that are already in production using Kotlin Multiplatform. Each one with it&#39;s own approach on what they&#39;re sharing between the Android and iOS app.</p>
+<p>Do you need more arguments to start? Easy, it&#39;s all Kotlin.</p>
+<aside class="special"><p><strong>Note: </strong>Looking for a comparison between the most used market solutions for multiplatform development? Touchlab has a really good and detailed article here: <a href="https://touchlab.co/how-does-kotlin-multiplatform-stack-up-against-other-multiplatform-solutions-our-scorecard-explained/" target="_blank">How does Kotlin Multiplatform stack up against other solutions? Our scorecard, explained</a>.</p>
+</aside>
+<h2 is-upgraded><strong>What do I need to start?</strong></h2>
+<p>There are a couple of options here depending on your own preference. Recently, after KMM plugin was released to Android Studio I&#39;ve changed my setup to:</p>
+<ul>
+<li>Android Studio 4.0.1 with KMM plugin.</li>
+<li>Xcode 11.7.</li>
+</ul>
+<p>You can also use AppCode instead of Xcode or Intellij IDEA instead of Android Studio.</p>
+<p>There&#39;s a third option, that is to just use Android Studio with the KMM plugin for everything. Although you can compile for the iOS simulator with it if you&#39;re going to develop the UI you might face a couple of issues - sometimes there&#39;s no code highlight and you don&#39;t have auto complete nor UI preview. Which makes sense, since they weren&#39;t build for iOS development.</p>
+<p>Briefly, my suggestion is to use Android Studio for Android and shared code and leave the iOS to Xcode - that&#39;s why it was built for.</p>
+<h2 is-upgraded><strong>How to install the KMM plugin</strong></h2>
+<p>Open Android Studio and follow the instructions:</p>
+<ol type="1" start="1">
+<li>On the top bar click on Android Studio → Preferences...</li>
+<li>A new window opens and on the left side bar click on the entry saying &#34;Plugins&#34;.</li>
+<li>On the tab bar select &#34;Marketplace&#34;.</li>
+<li>Search for &#34;Kotlin Multiplatform&#34;.</li>
+<li>Click on &#34;Install&#34;.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/1d1e638519ee4b86.png"></p>
+<p>After installing the IDE will restart and the plugin should now be enabled by default.</p>
+<aside class="special"><p><strong>Note:</strong> Don&#39;t forget that this is still a preview so you will find a couple of bugs along the way. Fortunately, JetBrains team is actively working on them and you&#39;ll see a lot of suggestions on how to bypass them from the community.</p>
+</aside>
+<h2 is-upgraded>How to create<strong> your first KMM project </strong></h2>
+<p>Although you&#39;re going to use a project that already has all the UI, so you can just focus on sharing the code across both platforms. It&#39;s important to understand how to create a project from scratch.</p>
+<p>For that, open the Android Studio and follow these instructions:</p>
+<ol type="1" start="1">
+<li>On the top bar go to &#34;File&#34; → &#34;New&#34; → &#34;New project...&#34;.</li>
+<li>&#34;Select a Project Template&#34; scroll to the bottom until you see &#34;KMM Application&#34;.</li>
+<li>Select that one.</li>
+</ol>
+<p class="image-container"><img style="width: 605.50px" src="img/a70e17f59ab57388.png"></p>
+<ol type="1" start="4">
+<li>Define the name, package name and it&#39;s location just like you normally would do on an Android project.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/e5c1fe0f5a728275.png"></p>
+<ol type="1" start="5">
+<li>Click on &#34;Finish&#34; and wait a bit until the entire project is loaded and indexed.</li>
+</ol>
+<aside class="warning"><p><strong>Note: </strong>Don&#39;t press compile and run as soon as everything is ready. Depending on your jdk version you might need to upgrade the default gradle wrapper that&#39;s set on the template.</p>
+</aside>
+<p>Before compiling the app go to the <strong>gradle-wrapper.properties</strong> and update the <code>distributionUrl</code> to gradle 6.3:</p>
+<p><code>distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-all.zip</code></p>
+<aside class="special"><p><strong>Note:</strong> For more information about this issue go to: <a href="https://youtrack.jetbrains.com/issue/KT-41604" target="_blank">Document that KMM Sample Project requires gradle 6.3 for jdk 14.0.2</a> on YouTrack.</p>
+</aside>
+<p>Now you can compile your project! On edit configurations on top of the page just select between Android and iOS - and have fun 🙌.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/3ed75e460c581937.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Developing a KMM application" duration="0">
+        <h2 is-upgraded><strong>All Together Now</strong></h2>
+<p>I&#39;ve developed two applications for this codelab: one for Android and the other for iOS. The entire business logic is shared between both platforms and only the UI itself is native.</p>
+<p>Both applications have the same set of features:</p>
+<ul>
+<li>Allow to communicate with other people using the app.</li>
+<li>Retrieve a list of conferences.</li>
+<li>Filter this list according to a specific criteria.</li>
+</ul>
+<p>Along with this I&#39;ve used the following libraries to put everything together:</p>
+<ul>
+<li><a href="https://github.com/firebase/" target="_blank">Firebase</a> (Firestore)</li>
+</ul>
+<p>There&#39;s no current version of a Firestore library that supports this with Kotlin 1.4, so we will implement this part ourselves.</p>
+<ul>
+<li><a href="https://github.com/ktorio/ktor" target="_blank">Ktor</a></li>
+</ul>
+<p>For network requests, in this case we will fetch the list of Android conferences from a Gist on Github.</p>
+<ul>
+<li><a href="https://github.com/Kotlin/kotlinx.serialization" target="_blank">kotlinx.serialization</a></li>
+</ul>
+<p>To parse the received data and convert it into a list of <code>Conference</code>s.</p>
+<ul>
+<li><a href="https://github.com/Kotlin/kotlinx.coroutines" target="_blank">kotlinx.coroutines</a></li>
+</ul>
+<p>        Handle the different requests made in the app.</p>
+<ul>
+<li><a href="https://github.com/Kotlin/kotlinx-datetime" target="_blank">kotlinx-datetime</a></li>
+</ul>
+<p>Shared library to retrieve the current system timestamp.</p>
+<ul>
+<li><a href="https://github.com/cashapp/sqldelight" target="_blank">sqldelight</a></li>
+</ul>
+<p>        Database used to store all the  <code>Conference</code>s locally.</p>
+<ul>
+<li><a href="https://github.com/russhwolf/multiplatform-settings" target="_blank">multiplatform-settings</a></li>
+</ul>
+<p>Saves and loads local settings into <code>SharedPreferences</code> or on <code>NSUserDefaults</code> depending on the platform that&#39;s running the application.</p>
+<p>All of these libraries are open source and with it you can track both the status of the project and check if there&#39;s any blocking issue/ solution to a problem that you might face.</p>
+<h2 is-upgraded><strong>Let&#39;s start!</strong></h2>
+<p><a href="https://github.com/cmota/kmm-all-together-now/tree/master/00.%20Starter%20Project" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download your starter project</paper-button></a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating a logger" duration="0">
+        <p>I would say that most of us at one time or the other decided to implement their own logger. Since they are platform-specific, it seems to be the best way to dive in into kotlin multiplatform is to create our own logger - <code>Gutenberg</code>.</p>
+<p>On Android we use:</p>
+<p><code>Log.d</code>, <code>Log.w</code> and <code>Log.e</code> for debug, warnings and errors respectively.</p>
+<p>and in iOS we typically use:</p>
+<p><code>print</code> for everything that we want to log.</p>
+<p>So, if our code is running on Android we want to use <code>Log</code> and if we&#39;re on iOS <code>print</code>. All of these without using a set of <code>if</code> and <code>else</code> conditions and ideally without shipping the other platform code which is just contributing to increment the dex count (and well, on Android this is quite problematic).</p>
+<p>As a rule of thumb, when referring to code that needs to be defined at the platform level I usually use the prefix <code>Platform*</code>, this makes it easier to look for these particular classes.</p>
+<p>Let&#39;s start by going to <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;</strong> and create the class <strong>PlatformLogger.kt</strong> which will contain all the logging methods for <code>Gutenberg</code>:</p>
+<ul>
+<li><code>debug</code></li>
+<li><code>warn</code></li>
+<li><code>error</code></li>
+</ul>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+internal expect class PlatformLogger {
+
+   fun debug(tag: String, message: String)
+
+   fun warn(tag: String, message: String)
+
+   fun error(tag: String, message: String)
+}
+
+object Gutenberg {
+
+   private val logger = PlatformLogger()
+
+   fun d(tag: String, message: String) {
+       logger.debug(tag, message)
+   }
+
+   fun w(tag: String, message: String) {
+       logger.warn(tag, message)
+   }
+
+   fun e(tag: String, message: String) {
+       logger.error(tag, message)
+   }
+}</code></pre>
+<p>You&#39;ll notice a keyword a bit different here - <code>expect</code>. </p>
+<p>So, what are you <code>expect</code>-ing? 🤔</p>
+<p>In order to define platform specific code on the <strong>shared</strong> module we use the keyword <code>expect</code>, this needs to later be defined on <strong>androidMain</strong> and <strong>iosMain</strong> with value, otherwise you won&#39;t be able to compile your project. This happens because the compiler itself has no clue what to <code>expect</code>, in this case what <strong>PlatformLogger.kt</strong> methods <code>debug</code>, <code>warn</code> and <code>error</code> are.</p>
+<aside class="special"><p>Everytime you use the keyword <code>expect</code> you need to define the corresponding <code>actual</code> value on the platform folders. Otherwise you won&#39;t be able to compile the project.</p>
+</aside>
+<p>Navigating to <strong>shared/src/androidMain/kotlin/&lt;package_name&gt;</strong> add a new kotlin class called the <strong>PlatformLogger.kt</strong>, where you&#39;re going to define what those methods should do when they&#39;re called from an Android application. Alternatively, you can move your cursor over <code>PlatformLogger</code> and press <strong>alt + enter</strong> to automatically generate the classes for the jvm and native.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import android.util.Log
+
+internal actual class PlatformLogger {
+
+   actual fun debug(tag: String, message: String) {
+       Log.d(tag, message)
+   }
+
+   actual fun warn(tag: String, message: String) {
+       Log.w(tag, message)
+   }
+
+   actual fun error(tag: String, message: String) {
+       Log.e(tag, message)
+   }
+}</code></pre>
+<p>Looking at the <code>import</code>, we can see that we&#39;re using code from the Android SDK itself, in this case we&#39;re using <code>Log</code>. So every time the Android app calls <code>Gutenberg.debug(String, String)</code> it will really be calling <code>Log.d(String, String)</code>. </p>
+<aside class="special"><p><strong>Note:</strong> This calls can be made both from the Android app itself (Activities, Fragments, etc.) and from the shared module, for instance to output the list of conferences that we&#39;ve received, as you&#39;re going to see in the next section.</p>
+</aside>
+<p>Now that we&#39;ve got the Android platform code defined, we need to do the same thing for iOS. Go to <strong>shared/src/iosMain/kotlin/&lt;package_name&gt;</strong> and add a new <strong>PlatformLogger.kt</strong> class.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+internal actual class PlatformLogger {
+
+   actual fun debug(tag: String, message: String) {
+       print(&#34;$tag | $message&#34;)
+   }
+
+   actual fun warn(tag: String, message: String) {
+       print(&#34;$tag | $message&#34;)
+   }
+
+   actual fun error(tag: String, message: String) {
+       print(&#34;$tag | $message&#34;)
+   }
+}</code></pre>
+<p>Now if you want to print something from the iOS app, you can call directly:</p>
+<p><code>Gutenberg().d(tag: String, message: String) </code></p>
+<p>and it will be printed on the IDE console with the format &#34;tag | message.&#34;</p>
+<p>Now let&#39;s update all of our application logs to our newly created <code>Gutenberg</code> logger. Hit compile and exchange some messages to see them being printed on the console ! 🖨</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fetching and parsing data" duration="0">
+        <p>I&#39;ve scrapped and edited all the conferences from the <a href="https://androidstudygroup.github.io/conferences/" target="_blank">Android Study Group</a> into a nice json hosted on GitHub Gists that you can find <a href="https://gist.github.com/cmota/c6b15f54c9fed96750e5828b2f001249" target="_blank">here</a>. It has all the basic information about a conference:</p>
+<ul>
+<li>Name</li>
+<li>City</li>
+<li>Country</li>
+<li>Date</li>
+<li>Logo</li>
+<li>Website</li>
+<li>Status</li>
+</ul>
+<p>Where this last field represents if it&#39;s &#34;online&#34; or if it was &#34;cancelled&#34;.</p>
+<p>In this section our goal is to fetch this data, parse it and display it on both applications. Of course, all of this logic will be written only once.</p>
+<aside class="special"><p><strong>Note:</strong> To avoid waiting for all the libraries to be downloaded the starter project already contains all that we&#39;re going to need. You can see this on <strong>build.gradle.kts</strong> inside the shared module.</p>
+</aside>
+<p>The libraries that are going to be used on this section are:</p>
+<ul>
+<li>io.ktor:ktor-client</li>
+<li>kotlinx-serialization</li>
+<li>kotlinx-coroutines</li>
+</ul>
+<p>If you go to <strong>src/commonMain/kotlin/&lt;package_name&gt;/data</strong> inside <strong>entities</strong> you&#39;ll see that there&#39;s a <strong>Conference.kt</strong> file with the following contents:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.data.entities
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Conference (val name: String,
+                      val city: String,
+                      val country: String,
+                      val date: String,
+                      val logo: String,
+                      val website: String,
+                      val status: String) {
+
+   fun isCanceled() = status == &#34;canceled&#34;
+}</code></pre>
+<p>Typically, you would need to create this file. However, to avoid having to create all the accesses at the UI level to the fields here defined, it&#39;s already committed. It&#39;s important to mention that this class is responsible to hold all of the conference data. Now, let&#39;s define the source for our requests and how we can make them with <strong>ktor</strong>.</p>
+<p>Create <strong>ConferencesAPI.k</strong> inside <strong>src/commonMain/kotlin/&lt;package_name&gt;/data</strong> and add the following code:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.data
+
+import io.ktor.client.HttpClient
+import io.ktor.client.request.*
+
+private const val BASE_URL = &#34;https://gist.githubusercontent.com/cmota/&#34;
+private const val ENDPOINT = &#34;c6b15f54c9fed96750e5828b2f001249/raw/d7fc5e1b711107583959663056e6643f24ccae81/conferences.json&#34;
+
+class ConferencesAPI {
+
+   private val client = HttpClient()
+   
+   suspend fun fetchConferences() = client.get&lt;String&gt;(&#34;$BASE_URL$ENDPOINT&#34;)
+}</code></pre>
+<p>If you&#39;re already familiarized with ktor you might see something a bit odd - where&#39;s the call to <code>install(JsonFeature)</code>? Typically we always need it if our response content type is <code>application/json</code> which it doesn&#39;t happen when we try to retrieve data from a Gist which is <code>text/plain</code>.</p>
+<p>With this, the serialization won&#39;t work directly and this is why I&#39;ve done it on <strong>GetConferences.kt</strong> class as you&#39;ll see in a second.</p>
+<aside class="special"><p><strong>Note:</strong> We&#39;re currently using the version 1.4.1 of ktor. There are a couple of issues reported that you might get an <code>InvalidMutabilityException</code> when trying to parse a json file automatically. If this happens on your application, I advise you to roll back to ktor 1.4.0. For more information check this issue on YouTrack: <a href="https://youtrack.jetbrains.com/issue/KTOR-1087" target="_blank">&#34;InvalidMutabilityException: Frozen during lazy computation&#34; when using by lazy for HttpClient</a>.</p>
+</aside>
+<p>Now that we&#39;ve got our network interface defined let&#39;s create our bridge with the domain layer. For this go to <strong>src/commonMain/kotlin/&lt;package_name/domain</strong> and create the class <strong>GetConferences.kt</strong> with the following content:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.domain
+
+import com.cmota.playground.alltogethernow.shared.Gutenberg
+import com.cmota.playground.alltogethernow.shared.data.ConferencesAPI
+import com.cmota.playground.alltogethernow.shared.data.entities.Conference
+import kotlinx.coroutines.coroutineScope
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+
+private const val TAG = &#34;GetConferences&#34;
+
+class GetConferences(private val api: ConferencesAPI) {
+
+   suspend operator fun invoke(onSuccess: (List&lt;Conference&gt;) -&gt; Unit, onFailure: (Exception) -&gt; Unit) {
+       try {
+           //1
+           val result = api.fetchConferences()
+           //2
+           val conferences = Json.decodeFromString&lt;List&lt;Conference&gt;&gt;(result)
+
+           Gutenberg.d(TAG, &#34;Result:$conferences&#34;)
+
+           coroutineScope {
+               //3
+               onSuccess(conferences)
+           }
+       } catch (e: Exception) {
+           coroutineScope {
+               //4
+               onFailure(e)
+           }
+       }
+   }
+}</code></pre>
+<p>You can see here that we&#39;re already using <code>Gutenberg</code> as our logger to log all the conferences that were retrieved. </p>
+<aside class="warning"><p><strong>Note: </strong>Unable to find the <strong>Gutenberg</strong> reference? Go to the previous section, <strong>Creating a logger</strong> to implement it.</p>
+</aside>
+<p>Here&#39;s a step-by-step breakdown of this logic:</p>
+<ol type="1" start="1">
+<li>We&#39;re calling <code>fetchConferences()</code> that we&#39;ve previously defined on <strong>ConferencesAPI.kt</strong>. It will be responsible to make the network requests, that we&#39;re going to parse on the next instruction.</li>
+<li>Once we&#39;ve got that data and since GitHub Gists response is always <code>text/plain</code> you&#39;ll need to parse it so we can have a list of all the conferences available.</li>
+<li>In case everything worked as expected we&#39;re going to call <code>onSuccess</code> (received as parameter) that will later notify the UI that there&#39;s new data available.</li>
+<li>If any of these steps fails, <code>onFailure</code> is called in opposite. This allows the UI to respond accordingly. An example of these failures, can be a request made when the device is not connected to the internet.</li>
+</ol>
+<p>Now let&#39;s go to the <strong>presentation</strong> layer and create the <strong>ConferenceListPresenter.kt</strong>. This file should be added into <strong>src/commonMain/kotlin/&lt;package_name&gt;/presentation</strong>.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.presentation
+
+import com.cmota.playground.alltogethernow.shared.domain.GetConferences
+import com.cmota.playground.alltogethernow.shared.domain.defaultDispatcher
+import com.cmota.playground.alltogethernow.shared.presentation.cb.IConferenceData
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+
+class ConferenceListPresenter(private val conferences: GetConferences,
+                             private val coroutineContext: CoroutineContext = defaultDispatcher
+) {
+
+   //1
+   private var view: IConferenceData? = null
+   private lateinit var scope: PresenterCoroutineScope
+
+   //2
+   fun attachView(currView: IConferenceData) {
+       view = currView
+       scope = PresenterCoroutineScope(coroutineContext)
+       fetchConferenceList()
+   }
+
+   //3
+   fun detachView() {
+       if (view == null) {
+           return
+       }
+
+       view = null
+       scope.viewDetached()
+   }
+
+   private fun fetchConferenceList() {
+       scope.launch {
+           //4
+           conferences(
+               onSuccess = { view?.onConferenceDataFetched(it) },
+               onFailure = { view?.onConferenceDataFailed(it) }
+           )
+       }
+   }
+}</code></pre>
+<p>This is the class that the UI (both Android and iOS) will call in order to get a list of conferences. Let&#39;s analyse it into further detail:</p>
+<ol type="1" start="1">
+<li>We have an interface defined here that we don&#39;t yet know (which makes sense since it&#39;s not created... yet!). This will later be used to call the respondent methods that are defined in the UI.</li>
+<li>I&#39;ve called this method <code>attachView</code> but it could easily be called <code>fetchConferences</code> for instance. The naming chosen here is just to be easier to understand when it should be called.</li>
+<li>The same thing applies to <code>detachView</code> which will cancel and destroy all the references to the previous defined fields.</li>
+<li>Now this is the important part. We&#39;ve received an interface on <code>attachView</code>, and the <strong>ConferenceListPresenter.kt</strong> itself receives the <code>GetConferences</code> class that we&#39;ve defined before. These two calls: <code>onSuccess</code> and <code>onFailure</code> represent the calls made inside invoke where we called the first one when new data was available and the second one when the operation failed. Here, this calls will be mapped into calling the interface <code>onConferenceDataFetched</code> and <code>onConferenceDataFailed</code> which will call the corresponding methods at the UI level.</li>
+</ol>
+<p>Now that we&#39;ve been talking about the <strong>IConferenceData.kt </strong>interface, let&#39;s create it under <strong>src/commonMain/kotlin/&lt;package_name&gt;/presentation/cb</strong> and add the following definitions:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.presentation.cb
+
+import com.cmota.playground.alltogethernow.shared.data.entities.Conference
+
+interface IConferenceData {
+
+   fun onConferenceDataFetched(conferences: List&lt;Conference&gt;)
+
+   fun onConferenceDataFailed(e: Exception)
+}</code></pre>
+<p>We&#39;re almost there! There&#39;s only three more instructions that we need to add before calling them from the UI. Let&#39;s head up to <strong>ServiceLocator.kt</strong> and add the following declarations:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.ConferencesAPI
+import com.cmota.playground.alltogethernow.shared.domain.GetConferences
+import com.cmota.playground.alltogethernow.shared.presentation.ConferenceListPresenter
+import kotlin.native.concurrent.ThreadLocal
+
+@ThreadLocal
+object ServiceLocator {
+
+   //Message fields were already and are defined here
+
+   private val conferencesAPI by lazy { ConferencesAPI() }
+
+   private val getConferences: GetConferences
+       get() = GetConferences(conferencesAPI)
+
+   val getConferencePresenter: ConferenceListPresenter
+       get() = ConferenceListPresenter(getConferences)
+}</code></pre>
+<p>Now that we&#39;ve got all the classes and methods defined we can jump in into the Android app and make these calls from there.</p>
+<p>Let&#39;s go to <strong>androidApp/src/main/java/&lt;package_name&gt;</strong> and look inside the <strong>fragments </strong>folder for the <strong>MessagesFragment.kt</strong> file. All the UI is already defined and created, however we don&#39;t have any call to get the conferences content. </p>
+<p>Previously, you&#39;ve see that the UI needed to declare an interface in order to be notified when there was new content available/when the request operation failed, so let&#39;s start by adding it to the implemented classes and define those two methods:</p>
+<pre><code>package com.cmota.playground.alltogethernow.androidApp.fragments
+
+import com.cmota.playground.alltogethernow.shared.ServiceLocator
+import com.cmota.playground.alltogethernow.shared.data.entities.Conference
+import com.cmota.playground.alltogethernow.shared.presentation.cb.IConferenceData
+import com.cmota.playground.alltogethernow.shared.Gutenberg
+
+private const val TAG = &#34;ConferencesFragment&#34;
+
+//1
+class ConferencesFragment : Fragment(), IConferenceData {
+   //2
+   private val presenterConferences by lazy { ServiceLocator.getConferencePresenter }
+
+   private fun setup() {
+       //Other UI instructions were omitted
+       
+       //3
+       presenterConferences.attachView(this)
+   }
+
+   //region IConferenceData
+
+   //4
+   override fun onConferenceDataFetched(conferences: List&lt;Conference&gt;) {
+       Gutenberg.d(TAG, &#34;New conference data fetched: $conferences&#34;)
+
+       val adapter = binding.rvConferences.adapter as ConferencesListAdapter
+       adapter.submitList(conferences)
+   }
+
+   override fun onConferenceDataFailed(e: Exception) {
+       Gutenberg.e(TAG, &#34;Unable to retrieve conference data. Reason: $e&#34;)
+   }
+
+   //endregion IConferenceData
+}</code></pre>
+<p>Diving into detail into this newly added logic, you can see:</p>
+<ol type="1" start="1">
+<li>A new interface is added: <code>IConferenceData</code>. It&#39;s going to be used to notify the UI from the shared module when new information is available.</li>
+<li><code>presenterConferences</code> is a field that corresponds to the <strong>ConferenceListPresenter</strong> that we&#39;ve defined on the shared module.</li>
+<li>From which we will call <code>attachView</code> which will be responsible for retrieving the conferences list from the server.</li>
+<li>Finally, these two methods will be called depending on the success state of the request operation.</li>
+</ol>
+<p>Now let&#39;s hit compile and run the Android application! Go over to the conferences tab, you should see the list of the next events to attend 🤖 .</p>
+<p>It&#39;s now time to get back at the IDE and do the same calls for the iOS app. Let&#39;s navigate to <strong>iosApp/iosApp/ConferencesViewController.swift</strong> and define the following extension:</p>
+<pre><code>extension ConferencesViewController: IConferenceData {
+  
+   func onConferenceDataFailed(e: KotlinException) {
+       Gutenberg().w(tag: &#34;onConferenceDataFailed&#34;, message: &#34;Error:\(e)&#34;)
+   }
+  
+   func onConferenceDataFetched(conferences: [Conference]) {
+       for conference in conferences {
+           Gutenberg().d(tag: &#34;onConferenceDataFetched&#34;, message: conference.name)
+       }
+      
+       self.conferences = conferences
+       self.tableView.reloadData()
+   }
+}</code></pre>
+<p>And now that everything is defined you just need to add the <code>PresenterConference</code> initialization and the calls to <code>attachView</code> to fetch the list and <code>detachView</code> to remove the subscription:</p>
+<pre><code>class ConferencesViewController: UIViewController {
+
+   private let presenterConference = ServiceLocator.init().getConferencePresenter
+    
+   override func viewDidAppear(_ animated: Bool) {
+       presenterConference.attachView(currView: self)
+   }
+  
+   override func viewWillDisappear(_ animated: Bool) {
+       presenterConference.detachView()
+   }
+}</code></pre>
+<p>Now that we&#39;ve got everything ready, compile and run the iOS app 🍏.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Storing data locally" duration="0">
+        <p>Now that we&#39;ve implemented our network label, let&#39;s go to the next feature: store this data locally on a database. We want to show the latest data at all times, so if the request fails you&#39;ll return the information stored on the local database.</p>
+<p>This is going to be done thanks to an amazing library called sqldelight.</p>
+<p>Before starting let&#39;s look at our <strong>build.gradle.kts</strong> inside the shared module to see where the sqldelight is defined:</p>
+<pre><code>plugins {
+   id(&#34;com.squareup.sqldelight&#34;)
+}</code></pre>
+<pre><code>sqldelight {
+   database(&#34;ConferenceDb&#34;) {
+       packageName = &#34;data&#34;
+   }
+}</code></pre>
+<p>Where we define the <strong>sq. </strong>database is going to be located so sqldelight can generate the corresponding classes and the <code>ConferenceDb</code> represents the generated file that&#39;s going to allow us to communicate with the database.</p>
+<p>And let&#39;s start with this definition. Go to <strong>shared/src/commonMain/sqldelight/data </strong>and create a new directory called <strong>model</strong> and inside it <strong>ConferenceModel.sq</strong> with the following sql instructions so the corresponding database can be created and accessed.</p>
+<pre><code>CREATE TABLE ConferenceModel (
+   id TEXT NOT NULL PRIMARY KEY,
+   name TEXT NOT NULL,
+   city TEXT NOT NULL,
+   country TEXT NOT NULL,
+   date TEXT NOT NULL,
+   logo TEXT NOT NULL,
+   website TEXT NOT NULL,
+   status TEXT NOT NULL
+);
+
+insertOrReplaceConference:
+INSERT OR REPLACE INTO ConferenceModel(id, name, city, country, date, logo, website, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllConferences:
+SELECT *
+FROM ConferenceModel;</code></pre>
+<p>Once you hit compile you&#39;ll see that a couple of files were generated under:</p>
+<ul>
+<li><strong>shared/build/generated/sqldelight/code/ConferenceDb</strong></li>
+</ul>
+<p>If you open for instance <strong>ConferenceDbImpl.kt</strong> you&#39;ll see all the instructions that you need to insert/update and get all conferences from the database.</p>
+<p>At the current version, 1.4.3, sqldelight requires that you define platform dependent code in order to create your databases on the device. So let&#39;s start by creating our <strong>Platform*</strong> classes.</p>
+<p>Go to the shared module directory: <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;</strong> and add the <strong>PlatformDatabase.kt</strong>.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import data.ConferenceDb
+
+expect class PlatformDatabase {
+
+   fun createDatabase(): ConferenceDb
+}</code></pre>
+<p>You already know how this works! You&#39;ve said that you <code>expect</code> that the platforms would define what <code>PlatformDatabase</code> is, so let&#39;s go to:</p>
+<ul>
+<li><strong>shared/src/androidMain/kotlin/&lt;package_name&gt; </strong></li>
+</ul>
+<p>And create the <code>actual</code> implementation of <strong>PlatformDatabase.kt</strong> for Android:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import android.content.Context
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
+import data.ConferenceDb
+
+lateinit var appContext: Context
+
+actual class PlatformDatabase {
+
+   actual fun createDatabase(): ConferenceDb {
+       return ConferenceDb(createDriver())
+   }
+
+   private fun createDriver(): SqlDriver {
+       return AndroidSqliteDriver(ConferenceDb.Schema, appContext, &#34;appData.db&#34;)
+   }
+}</code></pre>
+<p>The local database is going to be called <code>appData.db</code>.</p>
+<p>Looking close to the code it&#39;s possible to identify that it requires the application context in order to be created, which means that the Android app itself needs to define <code>appContext</code>. In order to do this, go over your android app under <strong>androidApp/src/main/java/&lt;package_name&gt;</strong> and in <strong>AppApplication.kt</strong> add:</p>
+<pre><code>package com.cmota.playground.alltogethernow.androidApp
+
+import android.app.Application
+import com.cmota.playground.alltogethernow.shared.appContext
+
+class AppApplication : Application() {
+
+   override fun onCreate() {
+       super.onCreate()
+
+       appContext = this
+   }
+}</code></pre>
+<p>Since the application is the first class of the Android app to be loaded and we&#39;ve defined <code>appContext</code> as <code>lateinit var</code> we need to initialize it on <code>onCreate</code>. This way we can guarantee that there won&#39;t be any accesses to the database without it being initialized.</p>
+<ul>
+<li><strong>shared/src/iosMain/kotlin/&lt;package_name&gt; </strong></li>
+</ul>
+<p>Now navigate to the <strong>iosMain</strong> directory and once again create the <code>actual</code> implementation of <strong>PlatformDatabase.kt</strong>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.squareup.sqldelight.db.SqlDriver
+import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
+import data.ConferenceDb
+
+actual class PlatformDatabase {
+
+   actual fun createDatabase(): ConferenceDb {
+       return ConferenceDb(createDriver())
+   }
+
+   private fun createDriver(): SqlDriver {
+       return NativeSqliteDriver(ConferenceDb.Schema, &#34;appData.db&#34;)
+   }
+}</code></pre>
+<p>And that&#39;s it for the iOS side.</p>
+<p>Now let&#39;s get back to the shared module and create the <strong>ConferenceDAO.kt</strong> so we can easily access the generated <strong>ConferenceDb.kt</strong>. To do this go to the directory <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;/domain/dao</strong> and add this new file.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.domain.dao
+
+import com.cmota.playground.alltogethernow.shared.data.entities.Conference
+import data.ConferenceDb
+
+class ConferenceDAO(database: ConferenceDb) {
+
+   private val db = database.conferenceModelQueries
+
+   internal fun insertOrReplace(conference: Conference) {
+       db.insertOrReplaceConference(
+           id = &#34;${conference.name}-${conference.country}-${conference.date}&#34;,
+           name = conference.name,
+           city = conference.city,
+           country = conference.country,
+           date = conference.date,
+           logo = conference.logo,
+           website = conference.website,
+           status = conference.status)
+   }
+
+   internal fun getAllConferences(): List&lt;Conference&gt; {
+       val data = db.selectAllConferences().executeAsList()
+
+       val conferences = mutableListOf&lt;Conference&gt;()
+       for (item in data) {
+           conferences += Conference(
+               item.name,
+               item.city,
+               item.country,
+               item.date,
+               item.logo,
+               item.website,
+               item.status)
+       }
+
+       return conferences
+   }
+}</code></pre>
+<p>This will get the fields defined on the <code>Conference</code> data class and either add them to the database via <code>insertOrReplace</code> or retrieve them from there on <code>getAllConferences</code>.</p>
+<p>Now that we&#39;ve got all the platform dependent code defined, open once again <strong>GetConferences.kt</strong> and let&#39;s store on the local database the conferences retrieved from the server:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.domain
+
+import com.cmota.playground.alltogethernow.shared.Gutenberg
+import com.cmota.playground.alltogethernow.shared.data.ConferencesAPI
+import com.cmota.playground.alltogethernow.shared.data.entities.Conference
+import com.cmota.playground.alltogethernow.shared.domain.dao.ConferenceDAO
+import kotlinx.coroutines.coroutineScope
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+
+private const val TAG = &#34;GetConferences&#34;
+
+//1
+class GetConferences(private val api: ConferencesAPI, private val dao: ConferenceDAO) {
+
+   suspend operator fun invoke(onSuccess: (List&lt;Conference&gt;) -&gt; Unit, onFailure: (Exception) -&gt; Unit) {
+       try {
+           val result = api.fetchConferences()
+           val conferences = Json.decodeFromString&lt;List&lt;Conference&gt;&gt;(result)
+
+           Gutenberg.d(TAG, &#34;Result:$conferences&#34;)
+
+           //2
+           for (conference in conferences) {
+               dao.insertOrReplace(conference)
+           }
+
+           coroutineScope {
+               onSuccess(conferences)
+           }
+       } catch (e: Exception) {
+           coroutineScope {
+               
+               //3
+               val conferences = dao.getAllConferences()
+               if (conferences.isEmpty()) {
+                   onFailure(e)
+               } else {
+                   onSuccess(conferences)
+               }
+           }
+       }
+   }
+}</code></pre>
+<p>Let&#39;s analyze this code step by step:</p>
+<ol type="1" start="1">
+<li>You&#39;ll now receive the <strong>ConferenceDAO</strong> that you&#39;ve previously created. This means that there&#39;s another update that we need to do before being able to compile the project again - create this object and send it on the call.</li>
+<li>Once there&#39;s new data available we&#39;re going to add it to the local database. Alternatively, you could just create a method that would receive that list and make that iteration there.</li>
+<li>If there was any problem during this operation the app will fallback to the existing data already added to the database. </li>
+</ol>
+<aside class="special"><p><strong>Note:</strong> There&#39;s another advantage on sharing this code across both platforms - consistency. Since everything is defined on the shared module, we can guarantee that the app will behave the same way either if it&#39;s running on an Android or an iOS. The days where the features didn&#39;t match will soon be a memory.</p>
+</aside>
+<p>Finally, let&#39;s open the <strong>ServiceLocator.kt</strong> and declare the <code>ConferenceDAO</code> object and update the call to <code>GetConferences()</code>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.ConferencesAPI
+import com.cmota.playground.alltogethernow.shared.domain.GetConferences
+import com.cmota.playground.alltogethernow.shared.domain.dao.ConferenceDAO
+import com.cmota.playground.alltogethernow.shared.presentation.ConferenceListPresenter
+import kotlin.native.concurrent.ThreadLocal
+
+@ThreadLocal
+object ServiceLocator {
+
+   private val conferencesAPI by lazy { ConferencesAPI() }
+
+   private val conferenceDao by lazy { ConferenceDAO(PlatformDatabase().createDatabase()) }
+
+   private val getConferences: GetConferences
+       get() = GetConferences(conferencesAPI, conferenceDao)
+
+   val getConferencePresenter: ConferenceListPresenter
+       get() = ConferenceListPresenter(getConferences)
+}</code></pre>
+<p>Now let&#39;s hit compile and run and let&#39;s see everything working 🚀. </p>
+<aside class="special"><p><strong>Note:</strong> To test this feature you can:</p>
+<ol type="1" start="1">
+<li>Open the conferences tab on your app.</li>
+<li>Once the data is fetched kill the app and turn off your WiFi/cellular network. </li>
+<li>Open the app again and go to the conferences tab.</li>
+</ol>
+<p>You should have all the conferences previously downloaded there.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Using multiplatform settings" duration="0">
+        <p>Let&#39;s dive into another library! This time the multiplatform-settings. Briefly, it gives you the possibility to use Android&#39;s <strong>SharedPreferences</strong> or iOS <strong>NSUserDefaults</strong> depending on the platform that you&#39;re currently using.</p>
+<p>This is already added on <strong>build.gradle.kts</strong> from the shared module, on the <code>commonMain</code> <code>dependencies</code> declaration:</p>
+<pre><code>implementation(&#34;com.russhwolf:multiplatform-settings:0.6.2&#34;)</code></pre>
+<p>Let&#39;s start by creating the <strong>PlatformSettings.kt</strong> that we are <code>expect</code>-ing. Similar to other <strong>Platform*</strong> files that you&#39;re creating, it should be added to <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;.</strong></p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.SettingsRepository
+
+expect object PlatformSettings {
+
+   val settingsRepository: SettingsRepository
+
+   fun createSettingsRepository(): SettingsRepository
+}</code></pre>
+<p>And now the actual implementation on <strong>shared/src/androidMain/kotlin/&lt;package_name&gt;</strong>: </p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import androidx.preference.PreferenceManager
+import com.cmota.playground.alltogethernow.shared.data.SettingsRepository
+import com.russhwolf.settings.AndroidSettings
+
+actual object PlatformSettings {
+
+   actual val settingsRepository : SettingsRepository by lazy {
+       createSettingsRepository()
+   }
+
+   actual fun createSettingsRepository(): SettingsRepository {
+       val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(appContext)
+       val settings = AndroidSettings(sharedPrefs)
+       return SettingsRepository(settings)
+   }
+}</code></pre>
+<p>That is going to use Android&#39;s <strong>SharedPreferences</strong> to store the required content, in this case the application settings.</p>
+<p>Now let&#39;s add the equivalent file to <strong>shared/src/iosMain/kotlin/&lt;package_name&gt;</strong>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.SettingsRepository
+import com.russhwolf.settings.AppleSettings
+import platform.Foundation.NSUserDefaults
+
+actual object PlatformSettings {
+
+   actual val settingsRepository : SettingsRepository by lazy {
+       createSettingsRepository()
+   }
+
+   actual fun createSettingsRepository(): SettingsRepository {
+       return SettingsRepository(AppleSettings(NSUserDefaults.standardUserDefaults))
+   }
+}</code></pre>
+<p>Which uses <strong>NSUserDefaults</strong>.</p>
+<p>Now that we&#39;ve got our settings defined, we&#39;re going to use them in two places:</p>
+<ul>
+<li>To save the current state of the online setting</li>
+<li>To save the user defined username</li>
+</ul>
+<p>So let&#39;s create these two settings on the shared module. Create a <strong>SettingsRepository.kt</strong> on <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;/data</strong> and add:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.data
+
+import com.cmota.playground.alltogethernow.shared.deviceName
+
+import com.russhwolf.settings.Settings
+
+private const val SETTING_ONLY_ONLINE = &#34;setting_show_only_online&#34;
+private const val SETTING_MY_USERNAME = &#34;setting_my_username&#34;
+
+class SettingsRepository(private val settings: Settings) {
+
+   private val appSettings: Settings = createAppSettings(settings)
+
+   private fun createAppSettings(settings: Settings): Settings {
+       settings.putString(SETTING_MY_USERNAME, deviceName())
+       settings.putBoolean(SETTING_ONLY_ONLINE, false)
+       return settings
+   }
+
+   fun getUsername() = appSettings.getString(SETTING_MY_USERNAME, deviceName())
+
+   fun setUsername(username: String) {
+       appSettings.putString(SETTING_MY_USERNAME, username)
+   }
+
+   fun shouldShowOnlyOnlineConferences() = appSettings.getBoolean(SETTING_ONLY_ONLINE, false)
+
+   fun onlyOnlineConferences(state: Boolean) {
+       appSettings.putBoolean(SETTING_ONLY_ONLINE, state)
+   }
+}</code></pre>
+<p>Now that we&#39;ve got both settings defined, let&#39;s first open the <strong>GetConferences.kt</strong> class, that&#39;s under <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;/domain</strong>, and add this logic to filter only for only conferences when this setting is enabled:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.domain
+
+import com.cmota.playground.alltogethernow.shared.PlatformSettings.settingsRepository
+
+class GetConferences(private val api: ConferencesAPI, private val dao: ConferenceDAO) {
+
+    suspend operator fun invoke(onSuccess: (List&lt;Conference&gt;) -&gt; Unit, onFailure: (Exception) -&gt; Unit) {
+        try {
+            // Request and parse logic
+
+            //Check current state of toggle only online
+            val availableConferences = if (settingsRepository.shouldShowOnlyOnlineConferences()) {
+                conferences.filter { !it.isCanceled() }
+            } else {
+                conferences
+            }
+
+            coroutineScope {
+                onSuccess(availableConferences)
+            }
+        } catch (e: Exception) {
+            // ...
+        }
+    }
+}</code></pre>
+<p>Finally, let&#39;s navigate to the android app by going to  <strong>androidApp/src/main/java/&lt;package_name&gt;/Fragments</strong> and open the <strong>SettingsFragment.kt</strong>, so the user can change these values.</p>
+<p>Here we&#39;ve got the <code>setup</code> method that&#39;s waiting for it&#39;s content to be defined:</p>
+<pre><code>private fun setup() {
+   binding.cbOnline.isChecked = settingsRepository.shouldShowOnlyOnlineConferences()
+   binding.cbOnline.setOnCheckedChangeListener { _, isChecked -&gt;
+       settingsRepository.onlyOnlineConferences(isChecked)
+   }
+
+   binding.etUsername.setText(settingsRepository.getUsername())
+   binding.etUsername.setOnFocusChangeListener { _, hasFocus -&gt;
+       if (!hasFocus) {
+           val text = binding.etUsername.text.toString()
+           if (text.isNotEmpty()) {
+               settingsRepository.setUsername(text)
+           }
+       }
+   }
+}</code></pre>
+<p>And in <strong>MessagesFragment.kt</strong>, update the <code>loadMessages()</code> and <code>sendMessages()</code> methods to instead of using the <code>deviceName()</code> as the username, retrieve the value stored on settings.</p>
+<pre><code>private fun setup() {
+   binding.cbOnline.isChecked = settingsRepository.shouldShowOnlyOnlineConferences()
+   binding.cbOnline.setOnCheckedChangeListener { _, isChecked -&gt;
+       settingsRepository.onlyOnlineConferences(isChecked)
+   }
+
+   binding.etUsername.setText(settingsRepository.getUsername())
+   binding.etUsername.setOnFocusChangeListener { _, hasFocus -&gt;
+       if (!hasFocus) {
+           val text = binding.etUsername.text.toString()
+           if (text.isNotEmpty()) {
+               settingsRepository.setUsername(text)
+           }
+       }
+   }
+}
+
+import com.cmota.playground.alltogethernow.shared.PlatformSettings.settingsRepository
+
+private fun loadMessages() {
+       // Load messages
+       val messages = mutableListOf&lt;Message&gt;()
+       for (document in snapshot.documents) {
+           val message = Message(
+               document.id,
+               &#34;${document.data?.get(&#34;username&#34;)}&#34;,
+               &#34;${document.data?.get(&#34;content&#34;)}&#34;,
+               &#34;${document.data?.get(&#34;timestamp&#34;)}&#34;,
+               document.data?.get(&#34;username&#34;) == settingsRepository.getUsername()
+           )
+
+           messages += message
+       }
+
+       //...
+   }
+}
+
+private fun sendMessage(content: String) {
+   val message = hashMapOf(
+       &#34;username&#34; to settingsRepository.getUsername(),
+       &#34;content&#34; to content,
+       &#34;timestamp&#34; to &#34;${System.currentTimeMillis()}&#34;
+   )
+
+   //...
+}</code></pre>
+<p>Now let&#39;s go to the <strong>SettingsViewController.swift</strong> inside <strong>iosApp/iosApp</strong> and update this this class to contain the equivalent iOS logic:</p>
+<pre><code>override func viewDidLoad() {
+        super.viewDidLoad()
+    
+        let online = PlatformSettings.init().settingsRepository.shouldShowOnlyOnlineConferences()
+        toggleOnline.setOn(online, animated: true)
+        toggleOnline.addTarget(self, action: #selector(onSwitchValueChanged), for: .touchUpInside)
+        
+        let username = PlatformSettings.init().settingsRepository.getUsername()
+        editTextUsername.text = username
+        editTextUsername.addTarget(self, action: #selector(onTextFieldValueChanged(_:)), for: .editingChanged)
+    }
+    
+    @objc func onSwitchValueChanged(_ toggleOnline: UISwitch) {
+        Gutenberg().d(tag: &#34;onSwitchValueChanged&#34;, message:&#34;\(toggleOnline.isOn)&#34;)
+        PlatformSettings.init().settingsRepository.onlyOnlineConferences(state: toggleOnline.isOn)
+    }
+    
+    @objc func onTextFieldValueChanged(_ textField: UITextField) {
+        let username = editTextUsername.text ?? &#34;&#34;
+        Gutenberg().d(tag: &#34;onTextFieldValueChanged&#34;, message: username)
+        PlatformSettings.init().settingsRepository.setUsername(username: username)
+    }</code></pre>
+<p>Finally, let&#39;s update the <strong>ChatViewController.swift</strong> to use the <code>username</code> defined on settings instead of <code>deviceName()</code>.</p>
+<pre><code>private func sendMessage(message: String) {
+        let id = Firestore.firestore().collection(collection).document().documentID
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = &#34;HH:mm&#34;
+                
+        let message = [&#34;username&#34;: PlatformSettings.init().settingsRepository.getUsername(),
+                       &#34;content&#34;: message,
+                       &#34;timestamp&#34;: &#34;\(Int64((date.timeIntervalSince1970 * 1000.0).rounded()))&#34;]
+                
+        Firestore.firestore().collection(&#34;dcEMEA&#34;).document(id).setData(message) { (error) in
+                    
+            guard let error = error else {
+                        
+                Gutenberg().d(tag: TAG, message: &#34;message was sent: \(message)&#34;)
+                return
+            }
+                    
+            Gutenberg().e(tag: TAG, message: &#34;error sending message: \(message); error: \(error.localizedDescription)&#34;)
+        }
+    }
+
+
+extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return messages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+        
+        let message = messages[indexPath.row]
+        let isIncoming = message.user != PlatformSettings.init().settingsRepository.getUsername()
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: isIncoming ? &#34;IncomingMessageCell&#34; : &#34;OutgoingMessageCell&#34;, for: indexPath) as! ChatMessageCell
+        cell.updateWithName(isIncoming ? message.user : &#34;&#34;, message: message.content, isIncoming: isIncoming)
+        
+        return cell
+    }
+}</code></pre>
+<p>All done! Now let&#39;s compile and run the app and filter the conferences list only online and try to update your username 🤲.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Understanding time" duration="0">
+        <p>Time is relative, right? Currently the way that we deal with it in our app is different on both platforms. Since our goal is to share the most logic possible we need to find a common ground for this. And this is why we have such good things like the kotlinx-datetime.</p>
+<p>This is already added on <strong>build.gradle.kts</strong> from the shared module, on the <code>commonMain</code> <code>dependencies</code> declaration:</p>
+<pre><code>implementation(&#34;org.jetbrains.kotlinx:kotlinx-datetime:0.1.0&#34;)</code></pre>
+<p>We&#39;re going to see this in further detail on the next chapter - <strong>migrating code to multiplatform</strong>, but for now let&#39;s just see how to use it.</p>
+<p>In order to get the current unix timestamp (the equivalent of <code>System.currentTimeInMillis()</code>) you just need to call:</p>
+<pre><code>import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+
+val now: Instant = Clock.System.now()
+now.toEpochMilliseconds()</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Migrating code to multiplatform: Firestore" duration="0">
+        <p>In the beginning of this year I was using touchlab&#39;s <a href="https://github.com/touchlab-lab/FirestoreKMP" target="_blank">FirestoreKMP</a> on a KMM application project that I&#39;ve made for testing. This library works really well, but unfortunately it only supports Kotlin until version 1.3.50. There&#39;s an amazing talk by Kevin Galligan at Øredev - <a href="https://vimeo.com/371460823" target="_blank">Kotlin Multiplatform Library Development</a> - where he explains how they&#39;ve put everything together using typealias and cinterop. And yes, this is as challenging as you might think.</p>
+<p>A couple more libraries for Firebase, and in this case Firestore are being developed but at this moment none of them seems to support Kotlin 1.4.10 at the moment of this Codelab:</p>
+<ul>
+<li><a href="https://github.com/lamba92/firebase-multiplatform" target="_blank">lamba92/firebase-multiplatform</a></li>
+<li><a href="https://github.com/gitliveapp/firebase-kotlin-sdk/" target="_blank">gitliveapp/firebase-kotlin-sdk</a></li>
+</ul>
+<p>In any case it&#39;s always good to look at them before trying to port the Firestore code from an Android/iOS project into the shared model. You can end up using a lot of time, especially on native - trust me.</p>
+<h3 is-upgraded><strong>Why sharing this logic?</strong></h3>
+<p>It&#39;s true that everything is working fine at this moment. You&#39;re able to exchange and receive messages between devices of the same or different platforms. So, why do we want to move this to a shared module?</p>
+<p>Consistency (and time).</p>
+<p>What happens when a new requirement pops on where the behaviour of this feature changes? Let&#39;s imagine that you want to have different threads per user instead of a single group chat. You&#39;ll need to go through a similar process to this one:</p>
+<ul>
+<li>Define requirements for this new feature</li>
+<li>Discuss the implementation details with both teams</li>
+<li>Implement it separately</li>
+<li>The Q&amp;A team needs to validate the feature both individually and side by side to confirm that everything is working as expected.</li>
+</ul>
+<p>And then an issue arises.</p>
+<p>You&#39;ll need to fix it on each of these platforms and the Q&amp;A team needs to repeat the previous steps. What if we&#39;d moved it to a shared module? Won&#39;t it take less time to develop/testing in the future and will improve the consistency now?</p>
+<p>Yes.</p>
+<h3 is-upgraded><strong>Android and iOS</strong></h3>
+<p>Let&#39;s start by looking at the Android and iOS code that we already have with the existing Firestore implementation. On Android if you open <strong>MessagesFragment.kt </strong>that&#39;s located under <strong>androidApp/src/main/java/&lt;package_name&gt;/fragments</strong> you&#39;ll see the <code>loadMessages</code> and <code>sendMessage</code> methods that deal with this logic. On iOS the same is implemented under <strong>ChatViewController.swift</strong> located inside <strong>iosApp/iosApp</strong> and corresponds to the same method declarations.</p>
+<p>You&#39;ll see two different methods that deal with the Firestore communication:</p>
+<ul>
+<li><code>loadMessages</code></li>
+</ul>
+<p>        That registers on &#34;dcEMEA&#34; channel on Firebase and retrieves all the messages that are stored there. When a new message is added to Firestore this callback is automatically triggered and the UI is updated via the <code>submitList</code> call.</p>
+<ul>
+<li><code>sendMessage</code></li>
+</ul>
+<p>Creates a message object with the username information along with what I&#39;d written on the <code>EditText</code> and the current timestamp and sends it to the &#34;dcEMEA&#34; channel. Once it&#39;s processed it can either call the <code>onSuccessListener</code> or <code>onFailureListener</code> depending if the message was delivered or not.</p>
+<h3 is-upgraded><strong>shared </strong></h3>
+<p>Now we want to move all of this logic to the shared module. First, we would typically need to add all of these libraries to the <strong>build.gradle.kts</strong> inside the shared module. To optimize this process they&#39;re already there.</p>
+<p>On Android</p>
+<pre><code>val commonMain by getting {
+   dependencies {
+       // ...
+         implementation(&#34;com.google.firebase:firebase-firestore-ktx:21.7.0&#34;)
+   }
+}</code></pre>
+<p>On iOS</p>
+<pre><code>cocoapods {
+   pod(&#34;FirebaseFirestore&#34;)
+}</code></pre>
+<p>Moving both methods to the shared module would probably take more time than the one that you&#39;ve spent doing this Codelab, so you&#39;re just going to move the <code>sendFirestoreData</code> to the shared module.</p>
+<p>Since this is code that is going to be platform dependent, you&#39;ll need to create a <strong>PlatformFirebaseFirestore.kt </strong> class on <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;.</strong></p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.entities.Message
+import com.cmota.playground.alltogethernow.shared.presentation.cb.IMessageData
+
+expect class FirebaseFirestore
+
+expect fun getFirebaseInstance(): FirebaseFirestore
+
+expect fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit)</code></pre>
+<p>Analysing the above code were also <code>expect</code>-ing a <code>FirebaseFirestore</code> class since the library being used will be different from Android and iOS.</p>
+<p>The <code>sendMessage</code> method receives the message that it wants to send and a callback that&#39;s going to be called when the message is processed by the Firestore call. It&#39;s going to be <code>true</code> in case it&#39;s delivered and <code>false</code> otherwise.</p>
+<p>Now let&#39;s go to <strong>androidMain</strong> and define what <code>actual</code>-ly this classes and methods are. Add the corresponding <strong>PlatformFirebaseFirestore.kt</strong> on <strong>shared/src/androidMain/kotlin/&lt;package_name&gt;</strong>.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.entities.Message
+import com.cmota.playground.alltogethernow.shared.data.SETTING_MY_USERNAME
+import com.cmota.playground.alltogethernow.shared.Gutenberg
+import com.google.firebase.firestore.FirebaseFirestore.getInstance
+
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+
+//1
+actual typealias FirebaseFirestore = com.google.firebase.firestore.FirebaseFirestore
+
+//2
+actual fun getFirebaseInstance() = getInstance()
+
+const val TAG = &#34;PlatformFirebaseFirestore-Android&#34;
+
+//3
+actual fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit) {
+
+   //4
+   val now: Instant = Clock.System.now()
+   now.toEpochMilliseconds()
+
+   //5
+   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
+
+   val content = hashMapOf(
+               &#34;username&#34; to username,
+               &#34;content&#34; to message,
+               &#34;timestamp&#34; to &#34;$now&#34;
+           )
+
+   val id: String = getFirebaseInstance().collection(&#34;collection_name&#34;).document().id
+   //6
+   getFirebaseInstance().collection(COLLECTION_DCEMEA).document(id)
+       .set(content)
+       .addOnSuccessListener { onResult(true) }
+       .addOnFailureListener { onResult(false) }
+}</code></pre>
+<p>Let&#39;s break down this logic step-by-step to better understand what&#39;s being done here:</p>
+<ol type="1" start="1">
+<li>The <code>FirebaseFirestore</code> class is going to be platform specific. Meaning that in one platform corresponds to <code>com.google.firebase.firestore.FirebaseFirestore</code>, and in the other (iOS) it will be <code>FIRFirestore</code>. So we need to use the typealias to make the distinction between both.</li>
+<li><code>getInstance()</code> call returns a <code>FirebaseFirestore</code> instance that&#39;s going to later be used to send content to Firestore.</li>
+<li>The message is now going to be sent through this implementation. If you look at the code on <strong>MessagesFragment.kt</strong>, you&#39;ll see that&#39;s the exact same code, we just moved it to here (thank you Kotlin).</li>
+<li>The <strong>kotlinx-datetime</strong> library that was mentioned on the <strong>Understanding time</strong> section and is used to get the messages timestamp.</li>
+<li>Access to username saved on the <strong>SharedPreferences</strong> via the multiplatform-settings library.</li>
+<li>Message is going to be sent through the <code>FirebaseFirestore</code> library.</li>
+</ol>
+<p>Now let&#39;s head to <strong>shared/src/iosMain/kotlin/&lt;package_name&gt;</strong> and create the corresponding <strong>PlatformFirebaseFirestore.kt</strong>.</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.data.entities.Message
+import com.cmota.playground.alltogethernow.shared.data.SETTING_MY_USERNAME
+import cocoapods.FirebaseFirestore.FIRFirestore
+import cocoapods.FirebaseFirestore.FIRCollectionReference
+import cocoapods.FirebaseFirestore.FIRQuery
+import cocoapods.FirebaseFirestore.FIRDocumentReference
+
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+
+//1
+actual typealias FirebaseFirestore = FIRFirestore
+
+//2
+actual fun getFirebaseInstance() = FIRFirestore.firestore()
+
+//3
+class CollectionReference(override val ios: FIRCollectionReference) : Query(ios) {
+
+   val path: String
+       get() = ios.path
+
+   fun add(data: Any) = DocumentReference(ios.addDocumentWithData(data as Map&lt;Any?, *&gt;, null))
+}
+
+class DocumentReference(val ios: FIRDocumentReference) {
+
+   val id: String
+       get() = ios.documentID
+
+   val path: String
+       get() = ios.path
+}
+
+open class Query(open val ios: FIRQuery) {
+   // Nothing is required for the calls defined for this project
+}
+
+//4
+fun collection(firestore: FirebaseFirestore, collectionPath: String) = CollectionReference(firestore.collectionWithPath(collectionPath))
+
+//5
+actual fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit) {
+   //6
+   val now: Instant = Clock.System.now()
+   now.toEpochMilliseconds()
+   
+   //7
+   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
+
+   val content = hashMapOf(
+               &#34;username&#34; to username,
+               &#34;content&#34; to message,
+               &#34;timestamp&#34; to &#34;$now&#34;
+           )
+
+   collection(getFirebaseInstance(), COLLECTION_DCEMEA).add(content)
+}</code></pre>
+<p>Looking at the overall code you can see it&#39;s far more complex than Android. Let&#39;s  start by breaking down this logic step-by-step:</p>
+<ol type="1" start="1">
+<li>Since <code>FirebaseFirestore</code> correspond to different libraries depending on the platform we need to use <code>typealias</code> for this, in this case you&#39;re going to use <code>FIRFirestore</code>.</li>
+<li>Unlike Android that returns the call to <code>getInstance()</code>, on iOS to retrieve the instance of <code>FIRFirestore</code> you need to call <code>FIRFirestore.firestore()</code>.</li>
+<li>Now this is the complex part. The library call to send a message to Firestore uses the following classes: <code>CollectionReference</code>, <code>DocumentReference</code> an <code>Query</code> so in order for the compiler to understand where they are located you&#39;ll need to define them here. To keep things simple I&#39;ve stripped out all the information that&#39;s not needed so briefly we end up with the classes declaration and a couple of methods that are going to be used to send a message, namely the add from <code>CollectionReference</code>.</li>
+<li>Following the previous logic, in order to send a message on iOS it&#39;s necessary to call <code>Firestore.firestore().collection(COLLECTION_DCEMEA).add(content)</code>, so we need to define the collection method which will return the <code>CollectionReference</code> mentioned previously.</li>
+<li>The message is now going to be sent through this implementation.</li>
+<li>Access to username saved on the <strong>NSUserDefaults</strong> via the multiplatform-settings library.</li>
+<li>The same logic that previously existed on <strong>ChatViewController.swift</strong> and it&#39;s now on the shared module.</li>
+</ol>
+<p>Now that both platforms have their Firestore code defined, let&#39;s create the methods that the UI can call to send a message. On <strong>src/commonMain/kotlin/&lt;package_name&gt;/domain</strong> create the class <strong>SendMessages.kt</strong>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.domain
+
+import com.cmota.playground.alltogethernow.shared.sendMessage
+
+import kotlinx.coroutines.coroutineScope
+
+class SendMessages {
+
+   suspend operator fun invoke(username: String, message: String, onResult: (Boolean) -&gt; Unit) {
+       coroutineScope {
+           sendMessage(username, message, onResult)
+       }
+   }
+}</code></pre>
+<p>We&#39;re going to follow the same approach designed for when you&#39;re implementing the logic for getting the list of conferences defined on section - <strong>Fetching and parsing data</strong>. We start by creating this <strong>SendMessages.kt</strong> class and then we will define the <strong>MessageListPresenter.kt, </strong>the<strong> IMessageData.kt</strong>, update the <strong>ServiceLocator.kt </strong>and finally we reach the UI and make the calls directly to this method.</p>
+<p>Create the <strong>MessageListPresenter.kt</strong> under <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;/presentation</strong>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.presentation
+
+import com.cmota.playground.alltogethernow.shared.domain.SendMessages
+import com.cmota.playground.alltogethernow.shared.domain.defaultDispatcher
+import com.cmota.playground.alltogethernow.shared.presentation.cb.IMessageData
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+
+private const val TAG = &#34;MessageListPresenter&#34;
+
+class MessageListPresenter(private val sendMessages: SendMessages,
+                          private val coroutineContext: CoroutineContext = defaultDispatcher
+) {
+
+   private var view: IMessageData? = null
+   private val scope by lazy {
+       PresenterCoroutineScope(coroutineContext)
+   }
+
+      fun sendMessage(username: String, message: String) {
+       scope.launch {
+           sendMessages(
+               username,
+               message,
+               onResult = { view?.onMessageSent(it) }
+           )
+       }
+   }
+
+   fun detachView() {
+       scope.viewDetached()
+
+       if (view == null) {
+           return
+       }
+
+       view = null
+   }
+}</code></pre>
+<p>And the interface to notify the UI when a message is sent under Create the <strong>MessageListPresenter.kt</strong> under <strong>shared/src/commonMain/kotlin/&lt;package_name&gt;/presentation/cb</strong>:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared.presentation.cb
+
+interface IMessageData {
+
+   fun onMessageSent(status: Boolean)
+}</code></pre>
+<p>Now on the <strong>ServiceLocator.kt</strong> you&#39;ll need to add the declarations that are going to be called from the UI:</p>
+<pre><code>package com.cmota.playground.alltogethernow.shared
+
+import com.cmota.playground.alltogethernow.shared.domain.SendMessages
+com.cmota.playground.alltogethernow.shared.presentation.MessageListPresenter
+import kotlin.native.concurrent.ThreadLocal
+
+@ThreadLocal
+object ServiceLocator {
+
+   //Other declarations
+
+   private val sendMessages: SendMessages
+       get() = SendMessages()
+
+   val getMessagesPresenter: MessageListPresenter
+       get() = MessageListPresenter(getMessages, sendMessages)
+}
+</code></pre>
+<p>Finally let&#39;s update the UI, for Android let&#39;s open the <strong>MessagesFragment.kt </strong>and update the <strong>sendMessage</strong> method to:</p>
+<pre><code>private fun sendMessage(content: String) {
+   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
+   presenterMessages.sendMessage(username, content)
+}</code></pre>
+<p>Now let&#39;s go over the <strong>ChatViewController.swift</strong> class and instead of having the send message logic there update it to make the class to the methods that we&#39;ve just implemented.</p>
+<pre><code>private func sendMessage(message: String) {
+   ServiceLocator.init().getMessagesPresenter.sendMessage(username: username, message: message)
+}</code></pre>
+<p>All done! It&#39;s now time to compile your apps and have fun 🙌 -</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Resources" duration="0">
+        <p>There are a lot of amazing resources out there, for me the best place to keep up to date with Kotlin Multiplatform and to have all my answers asked is undoubtedly their slack group:</p>
+<ul>
+<li><a href="https://kotlinlang.slack.com/" target="_blank">https://kotlinlang.slack.com/</a></li>
+</ul>
+<p>Of course there are a lot of awesome projects on GitHub that are being updated on every new Kotlin release, a special shout out to:</p>
+<ul>
+<li><a href="https://github.com/JetBrains/kotlinconf-app" target="_blank">JetBrains/kotlinconf-app</a></li>
+<li><a href="https://github.com/touchlab/DroidconKotlin" target="_blank">touchlab/DroidconKotlin</a></li>
+<li><a href="https://github.com/touchlab/KaMPKit" target="_blank">touchlab/KaMPKit</a></li>
+<li><a href="https://github.com/cmota/droidconMAD" target="_blank">cmota/droidconMAD</a></li>
+<li><a href="https://github.com/joreilly/PeopleInSpace" target="_blank">joreilly/PeopleInSpace</a></li>
+<li><a href="https://github.com/joreilly/galway-bus-android" target="_blank">joreilly/galways-bus-android</a></li>
+<li><a href="https://github.com/jonnyzzz/kotlin-game-of-life" target="_blank">jonnyzzz/kotlin-game-of-life</a></li>
+<li><a href="https://github.com/wojtek-kalicinski/sudoku-android" target="_blank">wojtek-kalicinski/sudoku-android</a></li>
+<li><a href="https://github.com/MarcinMoskala/WorkoutMPP" target="_blank">MarcinMoskala/WorkoutMPP</a></li>
+<li><a href="https://github.com/jarroyoesp/KotlinMultiPlatform" target="_blank">jarroyoesp/KotlinMultiPlatform</a></li>
+</ul>
+<p>and a couple more links that are worth to browse for their articles and documentation about Kotlin Multiplatform:</p>
+<ul>
+<li><a href="https://kotlinlang.org/lp/mobile/" target="_blank">JetBrains: Kotlin Multiplatform Mobile</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLQ176FUIyIUY6SKGl3Cj9yeYibBuRr3Hl" target="_blank">KotlinConf 2019 YouTube Playlist</a></li>
+<li><a href="https://talkingkotlin.com/" target="_blank">Talking Kotlin Podcast</a></li>
+<li><a href="https://touchlab.co/" target="_blank">Touchlab</a></li>
+<li><a href="https://www.youtube.com/channel/UC_LIW0OUdsRI21D0xnWkexw" target="_blank">Touchlab YouTube </a></li>
+<li><a href="https://moko.icerock.dev/" target="_blank">IceRock Development</a></li>
+<li><a href="https://www.youtube.com/channel/UCk680H4N8NHgbKvvtAtR9tg" target="_blank">Kotliners YouTube</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
