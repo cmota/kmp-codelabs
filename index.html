@@ -25,12 +25,12 @@
                   id="a-multiplatform-adventure"
                   title="A Multiplatform Adventure"
                   environment="web"
-                  feedback-link="https://github.com/cmota/a-multiplatform-adventure/issues">
+                  feedback-link="https://github.com/cmota/kmp-codelabs/issues">
     
       <google-codelab-step label="Introduction" duration="90">
         <p class="image-container"><img style="width: 501.50px" src="img/657b1858759b67ee.png"></p>
 <p>Image downloaded from <a href="https://kotlinlang.org/lp/mobile/" target="_blank">https://kotlinlang.org/lp/mobile/</a>.</p>
-<p><strong>Last Updated:</strong> 2020-10-05</p>
+<p><strong>Last Updated:</strong> 2020-10-08</p>
 <h2 is-upgraded>Kotlin Multiplatform</h2>
 <p>Before we start, it&#39;s important to mention that Kotlin Multiplatform is in <strong>alpha</strong>! During development you&#39;ll encounter several issues that will require your extra effort to solve and if you&#39;re relying on libraries you might need to wait for their updates before thinking to upgrade your kotlin version.</p>
 <h2 class="checklist" is-upgraded><strong>What you&#39;ll learn</strong></h2>
@@ -71,57 +71,11 @@
 <p>Do you need more arguments to start? Easy, it&#39;s all Kotlin.</p>
 <aside class="special"><p><strong>Note: </strong>Looking for a comparison between the most used market solutions for multiplatform development? Touchlab has a really good and detailed article here: <a href="https://touchlab.co/how-does-kotlin-multiplatform-stack-up-against-other-multiplatform-solutions-our-scorecard-explained/" target="_blank">How does Kotlin Multiplatform stack up against other solutions? Our scorecard, explained</a>.</p>
 </aside>
-<h2 is-upgraded><strong>What do I need to start?</strong></h2>
-<p>There are a couple of options here depending on your own preference. Recently, after KMM plugin was released to Android Studio I&#39;ve changed my setup to:</p>
-<ul>
-<li>Android Studio 4.0.1 with KMM plugin.</li>
-<li>Xcode 11.7.</li>
-</ul>
-<p>You can also use AppCode instead of Xcode or Intellij IDEA instead of Android Studio.</p>
-<p>There&#39;s a third option, that is to just use Android Studio with the KMM plugin for everything. Although you can compile for the iOS simulator with it if you&#39;re going to develop the UI you might face a couple of issues - sometimes there&#39;s no code highlight and you don&#39;t have auto complete nor UI preview. Which makes sense, since they weren&#39;t build for iOS development.</p>
-<p>Briefly, my suggestion is to use Android Studio for Android and shared code and leave the iOS to Xcode - that&#39;s why it was built for.</p>
-<h2 is-upgraded><strong>How to install the KMM plugin</strong></h2>
-<p>Open Android Studio and follow the instructions:</p>
-<ol type="1" start="1">
-<li>On the top bar click on Android Studio → Preferences...</li>
-<li>A new window opens and on the left side bar click on the entry saying &#34;Plugins&#34;.</li>
-<li>On the tab bar select &#34;Marketplace&#34;.</li>
-<li>Search for &#34;Kotlin Multiplatform&#34;.</li>
-<li>Click on &#34;Install&#34;.</li>
-</ol>
-<p class="image-container"><img style="width: 624.00px" src="img/1d1e638519ee4b86.png"></p>
-<p>After installing the IDE will restart and the plugin should now be enabled by default.</p>
-<aside class="special"><p><strong>Note:</strong> Don&#39;t forget that this is still a preview so you will find a couple of bugs along the way. Fortunately, JetBrains team is actively working on them and you&#39;ll see a lot of suggestions on how to bypass them from the community.</p>
-</aside>
-<h2 is-upgraded>How to create<strong> your first KMM project </strong></h2>
-<p>Although you&#39;re going to use a project that already has all the UI, so you can just focus on sharing the code across both platforms. It&#39;s important to understand how to create a project from scratch.</p>
-<p>For that, open the Android Studio and follow these instructions:</p>
-<ol type="1" start="1">
-<li>On the top bar go to &#34;File&#34; → &#34;New&#34; → &#34;New project...&#34;.</li>
-<li>&#34;Select a Project Template&#34; scroll to the bottom until you see &#34;KMM Application&#34;.</li>
-<li>Select that one.</li>
-</ol>
-<p class="image-container"><img style="width: 605.50px" src="img/a70e17f59ab57388.png"></p>
-<ol type="1" start="4">
-<li>Define the name, package name and it&#39;s location just like you normally would do on an Android project.</li>
-</ol>
-<p class="image-container"><img style="width: 624.00px" src="img/e5c1fe0f5a728275.png"></p>
-<ol type="1" start="5">
-<li>Click on &#34;Finish&#34; and wait a bit until the entire project is loaded and indexed.</li>
-</ol>
-<aside class="warning"><p><strong>Note: </strong>Don&#39;t press compile and run as soon as everything is ready. Depending on your jdk version you might need to upgrade the default gradle wrapper that&#39;s set on the template.</p>
-</aside>
-<p>Before compiling the app go to the <strong>gradle-wrapper.properties</strong> and update the <code>distributionUrl</code> to gradle 6.3:</p>
-<p><code>distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-all.zip</code></p>
-<aside class="special"><p><strong>Note:</strong> For more information about this issue go to: <a href="https://youtrack.jetbrains.com/issue/KT-41604" target="_blank">Document that KMM Sample Project requires gradle 6.3 for jdk 14.0.2</a> on YouTrack.</p>
-</aside>
-<p>Now you can compile your project! On edit configurations on top of the page just select between Android and iOS - and have fun 🙌.</p>
-<p class="image-container"><img style="width: 624.00px" src="img/3ed75e460c581937.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Developing a KMM application" duration="0">
+      <google-codelab-step label="Developing a KMM Application" duration="0">
         <h2 is-upgraded><strong>All Together Now</strong></h2>
 <p>I&#39;ve developed two applications for this codelab: one for Android and the other for iOS. The entire business logic is shared between both platforms and only the UI itself is native.</p>
 <p>Both applications have the same set of features:</p>
@@ -160,8 +114,151 @@
 </ul>
 <p>Saves and loads local settings into <code>SharedPreferences</code> or on <code>NSUserDefaults</code> depending on the platform that&#39;s running the application.</p>
 <p>All of these libraries are open source and with it you can track both the status of the project and check if there&#39;s any blocking issue/ solution to a problem that you might face.</p>
-<h2 is-upgraded><strong>Let&#39;s start!</strong></h2>
-<p><a href="https://github.com/cmota/kmm-all-together-now/tree/master/00.%20Starter%20Project" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download your starter project</paper-button></a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Set up the environment" duration="0">
+        <h2 is-upgraded>What do I need to start?</h2>
+<p>There are a couple of options here depending on your own preference. Recently, after KMM plugin was released to Android Studio I&#39;ve changed my setup to:</p>
+<ul>
+<li>Android Studio 4.0.1 with KMM plugin.</li>
+<li>Xcode 11.7.</li>
+</ul>
+<p>You can also use AppCode instead of Xcode or Intellij IDEA instead of Android Studio.</p>
+<p>There&#39;s a third option, that is to just use Android Studio with the KMM plugin for everything. Although you can compile for the iOS simulator with it if you&#39;re going to develop the UI you might face a couple of issues - sometimes there&#39;s no code highlight and you don&#39;t have auto complete nor UI preview. Which makes sense, since they weren&#39;t build for iOS development.</p>
+<p>Briefly, my suggestion is to use Android Studio for Android and shared code and leave the iOS to Xcode - that&#39;s why it was built for.</p>
+<h2 is-upgraded><strong>How to install the KMM plugin</strong></h2>
+<p>Open Android Studio and follow the instructions:</p>
+<ol type="1" start="1">
+<li>On the top bar click on Android Studio → Preferences...</li>
+<li>A new window opens and on the left side bar click on the entry saying &#34;Plugins&#34;.</li>
+<li>On the tab bar select &#34;Marketplace&#34;.</li>
+<li>Search for &#34;Kotlin Multiplatform&#34;.</li>
+<li>Click on &#34;Install&#34;.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/1d1e638519ee4b86.png"></p>
+<p>After installing the IDE will restart and the plugin should now be enabled by default.</p>
+<aside class="special"><p><strong>Note:</strong> Don&#39;t forget that this is still a preview so you will find a couple of bugs along the way. Fortunately, JetBrains team is actively working on them and you&#39;ll see a lot of suggestions on how to bypass them from the community.</p>
+</aside>
+<h2 is-upgraded><strong>How to create your first KMM project </strong></h2>
+<p>Although you&#39;re going to use a project that already has all the UI, so you can just focus on sharing the code across both platforms. It&#39;s important to understand how to create a project from scratch.</p>
+<p>For that, open the Android Studio and follow these instructions:</p>
+<ol type="1" start="1">
+<li>On the top bar go to &#34;File&#34; → &#34;New&#34; → &#34;New project...&#34;.</li>
+<li>&#34;Select a Project Template&#34; scroll to the bottom until you see &#34;KMM Application&#34;.</li>
+<li>Select that one.</li>
+</ol>
+<p class="image-container"><img style="width: 605.50px" src="img/a70e17f59ab57388.png"></p>
+<ol type="1" start="4">
+<li>Define the name, package name and it&#39;s location just like you normally would do on an Android project.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/e5c1fe0f5a728275.png"></p>
+<ol type="1" start="5">
+<li>Click on &#34;Finish&#34; and wait a bit until the entire project is loaded and indexed.</li>
+</ol>
+<aside class="warning"><p><strong>Note: </strong>Don&#39;t press compile and run as soon as everything is ready. Depending on your jdk version you might need to upgrade the default gradle wrapper that&#39;s set on the template.</p>
+</aside>
+<p>Before compiling the app go to the <strong>gradle-wrapper.properties</strong> and update the <code>distributionUrl</code> to gradle 6.3:</p>
+<p><code>distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-all.zip</code></p>
+<aside class="special"><p><strong>Note:</strong> For more information about this issue go to: <a href="https://youtrack.jetbrains.com/issue/KT-41604" target="_blank">Document that KMM Sample Project requires gradle 6.3 for jdk 14.0.2</a> on YouTrack.</p>
+</aside>
+<p>Now you can compile your project! On edit configurations on top of the page just select between Android and iOS - and have fun 🙌.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/3ed75e460c581937.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting Started" duration="0">
+        <p>The source code of this codelab is available on GitHub. It follows the same structure of this Codelab. </p>
+<p>Let&#39;s start! Open the content of <strong>Starter Project</strong> on Android Studio.</p>
+<p><a href="https://github.com/cmota/kmm-a-multiplatform-adventure" target="_blank"><paper-button class="colored" raised>Download: A Multiplatform Adventure</paper-button></a></p>
+<h2 is-upgraded>Compiling for Android Android and iOS</h2>
+<p>For this codelab I&#39;ve created a KMM (Kotlin Multiplatform Mobile) application for Android and iOS. Since we&#39;re targeting both platforms here you&#39;ll need to have installed:</p>
+<ul>
+<li>Android Studio with the KMM plugin or IntelliJ IDEA</li>
+<li>Xcode or AppCode</li>
+</ul>
+<h2 is-upgraded><strong>Compiling only for Android</strong></h2>
+<p>If you don&#39;t have Xcode/ AppCode installed you can still follow this tutorial! If you try to compile the project without having them, you&#39;ll see a similar error to this one:</p>
+<pre>&gt; Task :shared:cinteropFirebaseFirestoreIos FAILED
+2 actionable tasks: 1 executed, 1 up-to-date
+xcrun: error: unable to find utility &#34;xcodebuild&#34;, not a developer tool or in PATH
+Exception in thread &#34;main&#34; org.jetbrains.kotlin.konan.MissingXcodeException: An error occurred during an xcrun execution. Make sure that Xcode and its command line tools are properly installed.
+        at org.jetbrains.kotlin.konan.target.CurrentXcode.xcrun(Xcode.kt:77)
+        at org.jetbrains.kotlin.konan.target.CurrentXcode.access$xcrun(Xcode.kt:45)
+        at org.jetbrains.kotlin.konan.target.CurrentXcode$version$2.invoke(Xcode.kt:70)
+        at org.jetbrains.kotlin.konan.target.CurrentXcode$version$2.invoke(Xcode.kt:45)
+        at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:74)
+        at org.jetbrains.kotlin.konan.target.CurrentXcode.getVersion(Xcode.kt)
+        at org.jetbrains.kotlin.konan.target.AppleConfigurablesImpl$xcodePartsProvider$2.invoke(Apple.kt:71)
+        at org.jetbrains.kotlin.konan.target.AppleConfigurablesImpl$xcodePartsProvider$2.invoke(Apple.kt:24)
+        at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:74)
+        at org.jetbrains.kotlin.konan.target.AppleConfigurablesImpl.getXcodePartsProvider(Apple.kt)
+        at org.jetbrains.kotlin.konan.target.AppleConfigurablesImpl.getAbsoluteTargetToolchain(Apple.kt:48)</pre>
+<p>To overcome this I&#39;ve added a couple of comments on <strong>build.gradle.kts </strong>(the gradle configuration file inside the <strong>shared </strong>folder):</p>
+<pre><code>/* If you don&#39;t have Xcode installed comment this code block*/</code></pre>
+<p>That corresponds to the iOS compilation steps on kotlin multiplatform. Comment the code blocks that are under this phrase and click on compile again.</p>
+<h2 is-upgraded><strong>Installing CocoaPods</strong></h2>
+<p>On Mac is really simple to install CocoaPods, just open the terminal and execute the following command:</p>
+<pre><code>sudo gem install cocoapods</code></pre>
+<h2 is-upgraded><strong>Compiling the project</strong></h2>
+<p>Now that you&#39;ve got your environment ready, it&#39;s time to compile the project! Don&#39;t forget to download:</p>
+<p><a href="https://github.com/cmota/kmm-a-multiplatform-adventure" target="_blank"><paper-button class="colored" raised>A Multiplatform Adventure</paper-button></a></p>
+<ol type="1" start="1">
+<li>Clone the project locally</li>
+</ol>
+<pre><code>git clone https://github.com/cmota/kmm-a-multiplatform-adventure.git</code></pre>
+<ol type="1" start="2">
+<li>Now open the <strong>Starter Project</strong> on Android Studio (with KMM plugin installed).</li>
+</ol>
+<ol type="1" start="3">
+<li>You&#39;ll need to wait until gradle runs all the tasks. You can get up and stretch your legs a bit, this is going to take some minutes. </li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/74ce0ce3faf133da.png"></p>
+<ol type="1" start="4">
+<li>Compile and run the app. You should see a screen similar to this one:</li>
+</ol>
+<p class="image-container"><img style="width: 190.50px" src="img/4449544640fad084.png"></p>
+<ol type="1" start="5">
+<li>Now it&#39;s to compile for iOS! First, go to the <strong>iosApp</strong> inside the <strong>Starter Project </strong>folder on the command line.</li>
+</ol>
+<pre><code>cd kmm-a-multiplatform-adventure/
+cd Starter\ Project/
+cd iosApp</code></pre>
+<ol type="1" start="6">
+<li>Enter <strong>pod install</strong> to install all the of its dependencies</li>
+</ol>
+<pre><code>pod install</code></pre>
+<p>You should see a similar output to this one:</p>
+<pre><code>Analyzing dependencies
+Downloading dependencies
+Installing BoringSSL-GRPC (0.0.7)
+Installing FirebaseCore (6.10.3)
+Installing FirebaseCoreDiagnostics (1.7.0)
+Installing FirebaseFirestore (1.18.0)
+Installing GoogleDataTransport (7.4.0)
+Installing GoogleUtilities (6.7.2)
+Installing PromisesObjC (1.2.10)
+Installing abseil (0.20200225.0)
+Installing gRPC-C++ (1.28.2)
+Installing gRPC-Core (1.28.2)
+Installing leveldb-library (1.22)
+Installing nanopb (1.30906.0)
+Installing shared (1.0-SNAPSHOT)
+Generating Pods project
+Integrating client project
+Pod installation complete! There is 1 dependency from the Podfile and 13 total pods installed.</code></pre>
+<ol type="1" start="7">
+<li>Now that everything is installed let&#39;s open the <strong>iosApp.xcworkspace</strong> with Xcode.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/e7492f591367870d.png"></p>
+<aside class="special"><p><strong>Note:</strong> There are two project files inside the iosApp folder. It&#39;s easier to distinguish by the icon, the one that you need to open is the one that is white (extension <strong>.xcworkspace</strong>).</p>
+</aside>
+<ol type="1" start="8">
+<li>Now click on compile and run and let&#39;s see the app running on the iOS simulator/ iPhone!</li>
+</ol>
+<p class="image-container"><img style="width: 421.50px" src="img/a9b735ab3e2cf745.png"></p>
 
 
       </google-codelab-step>
@@ -491,7 +588,8 @@ class ConferencesFragment : Fragment(), IConferenceData {
 <li>From which we will call <code>attachView</code> which will be responsible for retrieving the conferences list from the server.</li>
 <li>Finally, these two methods will be called depending on the success state of the request operation.</li>
 </ol>
-<p>Now let&#39;s hit compile and run the Android application! Go over to the conferences tab, you should see the list of the next events to attend 🤖 .</p>
+<p>Now let&#39;s hit compile and run the Android application! Go over to the conferences tab, you should see the list of the next events to attend 🤖.</p>
+<p class="image-container"><img style="width: 254.30px" src="img/86784b5dd2b0779d.png"></p>
 <p>It&#39;s now time to get back at the IDE and do the same calls for the iOS app. Let&#39;s navigate to <strong>iosApp/iosApp/ConferencesViewController.swift</strong> and define the following extension:</p>
 <pre><code>extension ConferencesViewController: IConferenceData {
   
@@ -522,6 +620,7 @@ class ConferencesFragment : Fragment(), IConferenceData {
    }
 }</code></pre>
 <p>Now that we&#39;ve got everything ready, compile and run the iOS app 🍏.</p>
+<p class="image-container"><img style="width: 430.50px" src="img/e3e85d846b210e27.png"></p>
 
 
       </google-codelab-step>
@@ -1066,7 +1165,7 @@ now.toEpochMilliseconds()</code></pre>
 <pre><code>val commonMain by getting {
    dependencies {
        // ...
-         implementation(&#34;com.google.firebase:firebase-firestore-ktx:21.7.0&#34;)
+       implementation(&#34;com.google.firebase:firebase-firestore-ktx:21.7.0&#34;)
    }
 }</code></pre>
 <p>On iOS</p>
@@ -1091,7 +1190,6 @@ expect fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit)</code></
 <pre><code>package com.cmota.playground.alltogethernow.shared
 
 import com.cmota.playground.alltogethernow.shared.data.entities.Message
-import com.cmota.playground.alltogethernow.shared.data.SETTING_MY_USERNAME
 import com.cmota.playground.alltogethernow.shared.Gutenberg
 import com.google.firebase.firestore.FirebaseFirestore.getInstance
 
@@ -1111,15 +1209,15 @@ actual fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit) {
 
    //4
    val now: Instant = Clock.System.now()
-   now.toEpochMilliseconds()
+   val millis = now.toEpochMilliseconds()
 
    //5
-   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
+   val username = PlatformSettings.settingsRepository.getUsername()
 
    val content = hashMapOf(
                &#34;username&#34; to username,
                &#34;content&#34; to message,
-               &#34;timestamp&#34; to &#34;$now&#34;
+               &#34;timestamp&#34; to &#34;$millis&#34;
            )
 
    val id: String = getFirebaseInstance().collection(&#34;collection_name&#34;).document().id
@@ -1142,7 +1240,6 @@ actual fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit) {
 <pre><code>package com.cmota.playground.alltogethernow.shared
 
 import com.cmota.playground.alltogethernow.shared.data.entities.Message
-import com.cmota.playground.alltogethernow.shared.data.SETTING_MY_USERNAME
 import cocoapods.FirebaseFirestore.FIRFirestore
 import cocoapods.FirebaseFirestore.FIRCollectionReference
 import cocoapods.FirebaseFirestore.FIRQuery
@@ -1186,15 +1283,16 @@ fun collection(firestore: FirebaseFirestore, collectionPath: String) = Collectio
 actual fun sendMessage(message: String, onResult: (Boolean) -&gt; Unit) {
    //6
    val now: Instant = Clock.System.now()
-   now.toEpochMilliseconds()
+   val millis = now.toEpochMilliseconds()
    
    //7
-   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
+   val username = PlatformSettings.settingsRepository.getUsername()
+
 
    val content = hashMapOf(
                &#34;username&#34; to username,
                &#34;content&#34; to message,
-               &#34;timestamp&#34; to &#34;$now&#34;
+               &#34;timestamp&#34; to &#34;$millis&#34;
            )
 
    collection(getFirebaseInstance(), COLLECTION_DCEMEA).add(content)
@@ -1218,9 +1316,9 @@ import kotlinx.coroutines.coroutineScope
 
 class SendMessages {
 
-   suspend operator fun invoke(username: String, message: String, onResult: (Boolean) -&gt; Unit) {
+   suspend operator fun invoke(message: String, onResult: (Boolean) -&gt; Unit) {
        coroutineScope {
-           sendMessage(username, message, onResult)
+           sendMessage(message, onResult)
        }
    }
 }</code></pre>
@@ -1245,10 +1343,9 @@ class MessageListPresenter(private val sendMessages: SendMessages,
        PresenterCoroutineScope(coroutineContext)
    }
 
-      fun sendMessage(username: String, message: String) {
+      fun sendMessage(message: String) {
        scope.launch {
            sendMessages(
-               username,
                message,
                onResult = { view?.onMessageSent(it) }
            )
@@ -1288,19 +1385,71 @@ object ServiceLocator {
        get() = SendMessages()
 
    val getMessagesPresenter: MessageListPresenter
-       get() = MessageListPresenter(getMessages, sendMessages)
+       get() = MessageListPresenter(sendMessages)
 }
 </code></pre>
 <p>Finally let&#39;s update the UI, for Android let&#39;s open the <strong>MessagesFragment.kt </strong>and update the <strong>sendMessage</strong> method to:</p>
 <pre><code>private fun sendMessage(content: String) {
-   val username = PlatformSettings.settingsRepository.appSettings.find { it.key == SETTING_MY_USERNAME }?.get() ?: &#34;default&#34;
-   presenterMessages.sendMessage(username, content)
+   ServiceLocator.getMessagesPresenter.sendMessage(content)
 }</code></pre>
 <p>Now let&#39;s go over the <strong>ChatViewController.swift</strong> class and instead of having the send message logic there update it to make the class to the methods that we&#39;ve just implemented.</p>
 <pre><code>private func sendMessage(message: String) {
-   ServiceLocator.init().getMessagesPresenter.sendMessage(username: username, message: message)
+   ServiceLocator.init().getMessagesPresenter.sendMessage(message: message)
 }</code></pre>
 <p>All done! It&#39;s now time to compile your apps and have fun 🙌 -</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Troubleshooting" duration="0">
+        <p>There are a lot of dependencies here and we have to remember that although we&#39;ve got projects in production Kotlin Multiplatform is still in alpha. I&#39;ve noticed a couple of problems along the way, mainly setup related that I&#39;m going to enumerate here.</p>
+<p>Feel free to submit an issue on <a href="https://github.com/cmota/kmm-a-multiplatform-adventure/issues" target="_blank">GitHub</a> if you find any problem or if you have any suggestion for improvement 🙂.</p>
+<ol type="1" start="1">
+<li>KonanExternalToolFailure: The /usr/bin/xcrun command returned non-zero exit code: 72.</li>
+</ol>
+<p>It seems Xcode Command Tools are not properly configured. The easiest way to fix this is to go to the terminal and execute:</p>
+<pre><code>sudo xcode-select -s /Applications/Xcode.app/Contents/Developer</code></pre>
+<p>Where <code>/Applications/Xcode.app/Contents/Developer</code> is the path for Xcode.app.</p>
+<ol type="1" start="2">
+<li>Executing <strong>pod install</strong> failed</li>
+</ol>
+<p>If you see an error similar to this one when executing <strong>pod install</strong>:</p>
+<pre><code>$ pod install
+Analyzing dependencies
+[!] The `shared` pod failed to validate due to 2 errors:
+    - ERROR | attributes: Missing required attribute `homepage`.
+    - ERROR | attributes: Missing required attribute `summary`.
+    - WARN  | license: Invalid license type.
+
+
+[!] Automatically assigning platform `iOS` with version `13.7` on target `iosApp` because no platform was specified. Please specify a platform for this target in your Podfile. See `https://guides.cocoapods.org/syntax/podfile.html#platform`.</code></pre>
+<p>Check your <strong>shared.podspec</strong> inside the <strong>shared</strong> directory and see if you don&#39;t have anything commented there. Inside your <strong>build.gradle.kts</strong> you need to have the <code>summary</code> and <code>homepage</code> fields defined otherwise you won&#39;t be able to fetch the pods.</p>
+<ol type="1" start="3">
+<li>Module &#39;FirebaseFirestore&#39; not found</li>
+</ol>
+<p>If you&#39;re seeing an error similar to this one:</p>
+<pre><code>Exception in thread &#34;main&#34; java.lang.Error: /var/folders/h7/rp8ld5_n2ld57w78vzqvcrx40000gp/T/tmp3688931789970097219.m:1:9: fatal error: module &#39;FirebaseFirestore&#39; not found</code></pre>
+<p>It typically means that either you haven&#39;t run <strong>pod install </strong>in order to download the Pod files or that there&#39;s a problem with your KMM plugin. Try to disable it, restart Android Studio and install again. </p>
+<p>It can also mean that you forgot to install it. In that case go to the section of this Codelab - <strong>Set up the Environment</strong>, <strong>How to Install the KMM plugin</strong>. </p>
+<aside class="special"><p><strong>Note: </strong> Don&#39;t forget that you need to run <strong>pod install</strong> inside the <strong>iosApp</strong>.</p>
+</aside>
+<ol type="1" start="4">
+<li>Failed to install the following Android SDK packages</li>
+</ol>
+<p>If you&#39;re seeing an error similar to this one:</p>
+<pre><code>A problem occurred configuring project &#39;:core&#39;.
+&gt; Failed to install the following Android SDK packages as some licences have not been accepted.
+     platforms;android-29 Android SDK Platform 29
+  To build this project, accept the SDK license agreements and install the missing components using the Android Studio SDK Manager.
+  Alternatively, to transfer the license agreements from one workstation to another, see http://d.android.com/r/studio-ui/export-licenses.html
+  
+  Using Android SDK: /opt/android/sdk</code></pre>
+<p>The project is using a version of the Android SDK that you hadn&#39;t accepted it&#39;s licenses. The easiest way to solve this problem is to go to:</p>
+<ul>
+<li>Android Studio, Tools → SDK Manager </li>
+<li>Select the API 29 and then select &#34;OK&#34;</li>
+</ul>
+<p>You should be prompted to accept the user licenses now.</p>
 
 
       </google-codelab-step>

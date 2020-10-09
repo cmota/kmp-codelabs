@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2020-10-07T13:22:21Z",
+  "updated": "2020-10-09T01:15:27Z",
   "id": "a-multiplatform-adventure",
   "duration": 90,
   "title": "A Multiplatform Adventure",
@@ -15,11 +15,11 @@
     "published"
   ],
   "category": [
-    "kotlin"
+    "Mobile"
   ],
   "tags": [
     "dcemea"
   ],
-  "feedback": "https://github.com/cmota/a-multiplatform-adventure/issues",
+  "feedback": "https://github.com/cmota/kmp-codelabs/issues",
   "url": "a-multiplatform-adventure"
 }
